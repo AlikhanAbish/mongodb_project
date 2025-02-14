@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <style>
+    /* Basic styling */
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f4f4f4; }
+    input, select, button { margin: 5px 0; padding: 10px; width: 100%; }
+    button { background-color: #007bff; color: white; border: none; cursor: pointer; }
+    button:hover { background-color: #0056b3; }
+  
+    /* Navigation menu styles */
+    .navbar {
+      display: flex;
+      justify-content: space-around;
+      background-color: #333;
+      padding: 10px;
+    }
+    .navbar button {
+      background-color: transparent;
+      color: white;
+      border: 1px solid white;
+      padding: 10px 15px;
+      cursor: pointer;
+    }
+    .navbar button:hover {
+      background-color: white;
+      color: black;
+    }
+  </style>
+  <script>
+    async function loginUser() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      const response = await fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
+
+      const result = await response.json();
+      alert(result.message);
+      if (response.ok) {
+        localStorage.setItem("token", result.token);
+        if (result.status?.toLowerCase() === "admin") {
+          window.location.href = "index.html";
+        } else {
+          window.location.href = "users_info.html";
+        }
+      }
+    }
+</script>
+</head>
+<body>
+  <h1>Login</h1>
+  <input type="email" id="email" placeholder="Email" required>
+  <input type="password" id="password" placeholder="Password" required>
+  <button onclick="loginUser()">Login</button>
+</body>
+</html>

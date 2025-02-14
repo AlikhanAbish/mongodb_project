@@ -1,0 +1,60 @@
+[{
+  "_id": {
+    "$oid": "6790d1b812eb60d849c72b89"
+  },
+  "name": "John",
+  "surname": "mcGregor",
+  "email": "johnmc@gmail.com",
+  "status": "Inactive",
+  "department": "IT"
+},
+{
+  "_id": {
+    "$oid": "6790d1b812eb60d849c72b8a"
+  },
+  "name": "Jane",
+  "surname": "Smith",
+  "email": "jane.smith@example.com",
+  "status": "Inactive",
+  "department": "Human Resources"
+},
+{
+  "_id": {
+    "$oid": "6790d1b812eb60d849c72b8b"
+  },
+  "name": "Mike",
+  "surname": "Brown",
+  "email": "mike.brown@example.com",
+  "status": "Active",
+  "department": "Marketing"
+},
+{
+  "_id": {
+    "$oid": "6790e0ae7c28d6de3089f9a8"
+  },
+  "name": "Alikhan",
+  "surname": "Abishev",
+  "email": "aliabi@mail.ru",
+  "status": "Inactive",
+  "department": "IT"
+},
+{
+  "_id": {
+    "$oid": "6790e278ada1ae82bce1b177"
+  },
+  "name": "bekzat",
+  "surname": "kairesh",
+  "email": "beka@mail.ru",
+  "status": "Active",
+  "department": "IT"
+},
+{
+  "_id": {
+    "$oid": "6790e2efada1ae82bce1b178"
+  },
+  "name": "Abdullah",
+  "surname": "Gabit",
+  "email": "abd@gmail.com",
+  "status": "Inactive",
+  "department": "CS"
+}]

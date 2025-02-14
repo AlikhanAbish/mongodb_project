@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee Management</title>
+  <style>
+    /* Basic styling */
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f4f4f4; }
+    input, select, button { margin: 5px 0; padding: 10px; width: 100%; }
+    button { background-color: #007bff; color: white; border: none; cursor: pointer; }
+    button:hover { background-color: #0056b3; }
+
+    /* Navigation menu styles */
+    .navbar {
+      display: flex;
+      justify-content: space-around;
+      background-color: #333;
+      padding: 10px;
+    }
+    .navbar button {
+      background-color: transparent;
+      color: white;
+      border: 1px solid white;
+      padding: 10px 15px;
+      cursor: pointer;
+    }
+    .navbar button:hover {
+      background-color: white;
+      color: black;
+    }
+  </style>
+  <script>
+    const baseUrl = "http://localhost:3000/employees";
+
+    // ✅ Безопасное получение заголовков с токеном
+    function getAuthHeaders() {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            alert("Отсутствует токен. Выполните вход заново.");
+            window.location.href = "login.html";
+            return {};
+        }
+        return {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        };
+    }
+
+    // 📌 Получение списка сотрудников
+    async function fetchEmployees() {
+        const search = document.getElementById("search").value;
+        try {
+            const headers = getAuthHeaders();
+            if (!headers.Authorization) return;
+
+            const response = await fetch(`${baseUrl}?search=${search}`, { headers });
+            if (!response.ok) throw new Error("Не удалось получить данные");
+            const employees = await response.json();
+
+            const tableBody = document.getElementById("employee-table-body");
+            tableBody.innerHTML = employees.map(emp => `
+                <tr>
+                    <td>${emp.name}</td>
+                    <td>${emp.surname}</td>
+                    <td>${emp.email}</td>
+                    <td>${emp.status}</td>
+                    <td>${emp.department}</td>
+                    <td>
+                        <button onclick="editEmployee('${emp._id}')">✏️ Edit</button>
+                        <button onclick="deleteEmployee('${emp._id}')">🗑️ Delete</button>
+                    </td>
+                </tr>
+            `).join("");
+        } catch (err) {
+            console.error("Ошибка загрузки сотрудников:", err);
+            alert(`Ошибка: ${err.message}`);
+        }
+    }
+
+    // 📌 Добавление сотрудника
+    async function addEmployee() {
+        const name = document.getElementById("name").value.trim();
+        const surname = document.getElementById("surname").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const status = document.getElementById("status").value.trim();
+        const department = document.getElementById("department").value.trim();
+
+        if (!name || !surname || !email || !status || !department) {
+            alert("Все поля должны быть заполнены!");
+            return;
+        }
+
+        try {
+            const headers = getAuthHeaders();
+            if (!headers.Authorization) return;
+
+            const response = await fetch(baseUrl, {
+                method: "POST",
+                headers,
+                body: JSON.stringify({ name, surname, email, status, department })
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.message);
+            }
+
+            alert("✅ Сотрудник добавлен!");
+            fetchEmployees();
+        } catch (err) {
+            console.error("Ошибка добавления сотрудника:", err);
+            alert(`🚨 Ошибка: ${err.message}`);
+        }
+    }
+
+    // 📌 Обновление сотрудника
+async function editEmployee(id) {
+    const name = prompt("Введите новое имя:");
+    const surname = prompt("Введите новую фамилию:");
+    const email = prompt("Введите новый email:");
+    const status = prompt("Введите новый статус (Admin/User):");
+    const department = prompt("Введите новый отдел:");
+
+    if (!name || !surname || !email || !status || !department) {
+        alert("Все поля должны быть заполнены!");
+        return;
+    }
+
+    if (id.length !== 24) {
+        alert("Неверный формат ID!");
+        return;
+    }
+
+    try {
+        const headers = getAuthHeaders();
+        const response = await fetch(`${baseUrl}/${id}`, {
+            method: "PUT",
+            headers: {
+                ...headers,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ name, surname, email, status, department })
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message);
+        }
+
+        alert("✅ Сотрудник обновлен!");
+        fetchEmployees();
+    } catch (err) {
+        console.error("Ошибка обновления сотрудника:", err);
+        alert(`🚨 Ошибка: ${err.message}`);
+    }
+}
+
+// 📌 Удаление сотрудника
+async function deleteEmployee(id) {
+    if (!confirm("❌ Удалить сотрудника?")) return;
+
+    try {
+        const headers = getAuthHeaders();
+        const response = await fetch(`${baseUrl}/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": headers.Authorization // Content-Type не нужен
+            }
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message);
+        }
+
+        alert("🗑️ Сотрудник удален!");
+        fetchEmployees();
+    } catch (err) {
+        console.error("Ошибка удаления сотрудника:", err);
+        alert(`🚨 Ошибка: ${err.message}`);
+    }
+}
+
+
+    window.onload = fetchEmployees;
+</script>
+
+</head>
+<body>
+  <!-- Navigation Menu -->
+  <nav class="navbar">
+    <button onclick="location.href='registration.html'">Registration</button>
+    <button onclick="location.href='login.html'">Login</button>
+    <button onclick="location.href='index.html'">Employees</button>
+  </nav>
+
+  <h1>Employee Management</h1>
+  <h2>Add Employee</h2>
+  <form onsubmit="event.preventDefault(); addEmployee();">
+    <input type="text" id="name" placeholder="Name" required>
+    <input type="text" id="surname" placeholder="Surname" required>
+    <input type="email" id="email" placeholder="Email" required>
+    <select id="status" required>
+      <option value="Admin">Admin</option>
+      <option value="User">User</option>
+    </select>
+    <input type="text" id="department" placeholder="Department" required>
+    <button type="submit">Add</button>
+  </form>
+
+  <h2>Search</h2>
+  <input type="text" id="search" placeholder="Search by name" oninput="fetchEmployees()">
+
+  <h2>Employees</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th>Department</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="employee-table-body">
+      <!-- Rows will be populated dynamically -->
+    </tbody>
+  </table>
+</body>
+</html>

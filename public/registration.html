@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration</title>
+  <script>
+    async function registerUser() {
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const status = document.getElementById("status").value;
+
+      const response = await fetch("http://localhost:3000/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password, status })
+      });
+      
+      const result = await response.json();
+      alert(result.message);
+      if (response.ok) window.location.href = "login.html";
+    }
+  </script>
+
+<style>
+  /* Basic styling */
+  body { font-family: Arial, sans-serif; margin: 20px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+  th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+  th { background-color: #f4f4f4; }
+  input, select, button { margin: 5px 0; padding: 10px; width: 100%; }
+  button { background-color: #007bff; color: white; border: none; cursor: pointer; }
+  button:hover { background-color: #0056b3; }
+
+  /* Navigation menu styles */
+  .navbar {
+    display: flex;
+    justify-content: space-around;
+    background-color: #333;
+    padding: 10px;
+  }
+  .navbar button {
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+    padding: 10px 15px;
+    cursor: pointer;
+  }
+  .navbar button:hover {
+    background-color: white;
+    color: black;
+  }
+</style>
+</head>
+<body>
+  <h1>Register</h1>
+  <input type="text" id="name" placeholder="Name" required>
+  <input type="email" id="email" placeholder="Email" required>
+  <input type="password" id="password" placeholder="Password" required>
+  <select id="status">
+    <option value="User">User</option>
+    <option value="Admin">Admin</option>
+  </select>
+  <button onclick="registerUser()">Register</button>
+  <p>Already have an account? <a href="login.html">Login</a></p>
+</body>
+</html>

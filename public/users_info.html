@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Users Info</title>
+  <style>
+    /* Basic styling */
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f4f4f4; }
+    input, select, button { margin: 5px 0; padding: 10px; width: 100%; }
+    button { background-color: #007bff; color: white; border: none; cursor: pointer; }
+    button:hover { background-color: #0056b3; }
+
+    /* Navigation menu styles */
+    .navbar {
+      display: flex;
+      justify-content: space-around;
+      background-color: #333;
+      padding: 10px;
+    }
+    .navbar button {
+      background-color: transparent;
+      color: white;
+      border: 1px solid white;
+      padding: 10px 15px;
+      cursor: pointer;
+    }
+    .navbar button:hover {
+      background-color: white;
+      color: black;
+    }
+  </style>
+  <script>
+    async function fetchUsers() {
+      const response = await fetch("http://localhost:3000/employees");
+      const users = await response.json();
+      const tableBody = document.getElementById("users-table-body");
+      tableBody.innerHTML = users.map(user => `
+        <tr>
+          <td>${user.name}</td>
+          <td>${user.email}</td>
+          <td>${user.status}</td>
+        </tr>
+      `).join("");
+    }
+    window.onload = fetchUsers;
+  </script>
+</head>
+<body>
+  <!-- Navigation Menu -->
+  <nav class="navbar">
+    <button onclick="location.href='registration.html'">Registration</button>
+    <button onclick="location.href='login.html'">Login</button>
+    <button onclick="location.href='users_info.html'">Employees</button>
+  </nav>
+
+  <h1>Users Info</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="users-table-body"></tbody>
+  </table>
+</body>
+</html>
