@@ -14,23 +14,157 @@
     button { background-color: #007bff; color: white; border: none; cursor: pointer; }
     button:hover { background-color: #0056b3; }
 
-    /* Navigation menu styles */
-    .navbar {
+   /* Общий стиль */
+   * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html, body {
+      font-family: Arial, sans-serif;
+      height: 100%;
       display: flex;
-      justify-content: space-around;
-      background-color: #333;
-      padding: 10px;
+      flex-direction: column;
+      background-color: #f8f9fa;
     }
-    .navbar button {
-      background-color: transparent;
+
+
+  
+    /* Общие стили */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+    }
+
+    /* Навигационное меню */
+    .navbar {
+      background-color: #2b1d8b;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 50px;
+    }
+
+    .navbar .logo {
       color: white;
-      border: 1px solid white;
-      padding: 10px 15px;
-      cursor: pointer;
+      font-size: 24px;
+      font-weight: bold;
     }
-    .navbar button:hover {
-      background-color: white;
-      color: black;
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+    }
+
+    .nav-links li {
+      display: inline;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: white;
+      font-size: 18px;
+      transition: color 0.3s ease-in-out;
+    }
+
+    .nav-links a:hover {
+      color: #00d1ff;
+    }
+
+    /* Кнопки */
+    .nav-buttons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .btn {
+      padding: 8px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 20px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn-signin {
+      border: 2px solid white;
+      color: white;
+      background: transparent;
+    }
+
+    .btn-signin:hover {
+      background: white;
+      color: #2b1d8b;
+    }
+
+    .btn-signup {
+      background: #00d1ff;
+      color: white;
+      border: none;
+    }
+
+    .btn-signup:hover {
+      background: #00a3cc;
+    }
+
+    /* Контейнер */
+    .container {
+      flex: 1;
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+      background: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+
+    h1 {
+        margin-top: 3%;
+        margin-bottom: 3%;
+      text-align: center;
+      color: #343a40;
+    }
+
+    /* Таблица */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    tr:hover {
+      background-color: #d1ecf1;
+    }
+
+    /* Футер */
+    .footer {
+      background-color: #343a40;
+      color: white;
+      text-align: center;
+      padding: 30px;
+      margin-top: auto;
     }
   </style>
   <script>
@@ -193,9 +327,18 @@ async function deleteEmployee(id) {
 <body>
   <!-- Navigation Menu -->
   <nav class="navbar">
-    <button onclick="location.href='registration.html'">Registration</button>
-    <button onclick="location.href='login.html'">Login</button>
-    <button onclick="location.href='index.html'">Employees</button>
+    <div class="logo">StaffFlow</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Employees</a></li>
+      <li><a href="#">Get The App</a></li>
+      <li><a href="#">Features</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">F.A.Q.</a></li>
+    </ul>
+    <div class="nav-buttons">
+      <a href="login.html" class="btn btn-signin">Sign In</a>
+      <a href="registration.html" class="btn btn-signup">Sign Up</a>
+    </div>
   </nav>
 
   <h1>Employee Management</h1>
@@ -231,5 +374,11 @@ async function deleteEmployee(id) {
       <!-- Rows will be populated dynamically -->
     </tbody>
   </table>
+
+  <!-- Футер -->
+  <footer class="footer">
+    <p>StaffFlow &copy; 2025 | Address: 123 Main Street, City, Country | Phone: +123 456 7890</p>
+  </footer>
+
 </body>
 </html>
